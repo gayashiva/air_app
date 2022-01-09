@@ -6,7 +6,6 @@ import streamlit as st
 import pandas as pd
 import sys, os, math, json
 import logging
-import coloredlogs
 from pathlib import Path
 from datetime import datetime, timedelta
 from utils.metadata import get_parameter_metadata
