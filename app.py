@@ -319,16 +319,16 @@ if __name__ == "__main__":
 
         if "Timelapse" in display:
             st.write("## Timelapse")
-            if location == "Schwarzsee 2019":
+            if location == "schwarzsee19":
                 url = "https://youtu.be/GhljRBGpxMg"
                 st.video(url)
-            elif location == "Guttannen 2021":
+            elif location == "guttannen21":
                 url = "https://www.youtube.com/watch?v=kXi4abO4YVM"
                 st.video(url)
-            elif location == "Guttannen 2020":
+            elif location == "guttannen20":
                 url = "https://youtu.be/kcrvhU20OOE"
                 st.video(url)
-            elif location == "Gangles 2021":
+            elif location == "gangles21":
                 st.error("No Timelapse recorded")
 
         if "Data Overview" in display:
