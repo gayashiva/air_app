@@ -17,6 +17,12 @@ def get_parameter_metadata(
             "kind": "parameter",
             "units": "[$mm$]",
         },
+        "snow_h": {
+            "name": "Snow height",
+            # "latex": "$A_{corr}$",
+            "kind": "parameter",
+            "units": "[$cm$]",
+        },
         # "A_cone_corr": {
         #     "name": "Surface area correction factor",
         #     "latex": "$A_{corr}$",
@@ -102,6 +108,13 @@ def get_parameter_metadata(
         "guttannen21": {
             "name": "Guttannen 2021",
             "shortname": "CH21",
+            "slidename": "Swiss",
+            "kind": "site",
+            "units": "()",
+        },
+        "guttannen22": {
+            "name": "Guttannen 2022",
+            "shortname": "CH22",
             "slidename": "Swiss",
             "kind": "site",
             "units": "()",
@@ -423,8 +436,6 @@ def get_parameter_metadata(
         "dr": {
             "name": "Radius growth rate",
             "latex": "$\\Delta y$",
-            # "ylim": [10e-03, 50e-03],
-            # "step": 5e-03,
             "kind": "Output",
             "units": "($m$)",
         },

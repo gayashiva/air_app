@@ -21,7 +21,7 @@ st.set_page_config(
     page_icon=air_logo,  # String, anything supported by st.image, or None.
 )
 
-github_url = "https://github.com/gayashiva/air_model/tree/master/"
+# github_url = "https://github.com/gayashiva/air_model/tree/master/"
 
 
 @st.cache
@@ -60,12 +60,21 @@ if __name__ == "__main__":
 
     location = st.sidebar.radio(
         "built at",
-        ("gangles21", "guttannen21", "guttannen20"),
+        # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
+        ("Gangles 2021", "Guttannen 2021", "Guttannen 2020", "Guttannen 2022"),
     )
+
+    loc_dict ={
+            "Guttannen 2021": "guttannen21",
+            "Guttannen 2020": "guttannen20",
+            "Guttannen 2022": "guttannen22",
+            "Gangles 2021": "gangles21",
+        }
+    location = loc_dict[location]
 
     CONSTANTS, SITE, FOLDER = config(location)
 
-    df_in = pd.read_hdf("data/" + location + "/processed/model_output.h5", "df")
+    df_in = pd.read_hdf("data/" + location + "/processed/output.h5", "df")
 
     (
         input_cols,
@@ -191,11 +200,13 @@ if __name__ == "__main__":
         st.markdown(" ")
         st.image(
             "logos/Logo-Swiss-Polar-Institute.png",
-            # caption="Swiss Polar Institute",
             use_column_width=True,
         )
 
     with row3_1:
+
+        with open("data/" + location + "/processed/results.json", "r") as read_file:
+            results_dict = json.load(read_file)
 
         mean_freeze_rate = df_in[
             df_in.Discharge != 0
@@ -206,11 +217,17 @@ if __name__ == "__main__":
             """
         | Fountain | Estimation |
         | --- | --- |
+        | Spray Radius | %.1f $m$|
+        | Water sprayed| %i $m^3$ |
+        | Mean discharge rate | %i $l/min$ |
         | Mean freeze rate | %.1f $l/min$ |
         | Mean melt rate | %.1f $l/min$ |
         | Runtime | %s $hours$ |
         """
             % (
+                results_dict["R_F"],
+                results_dict["M_F"] / 1000,
+                results_dict["D_F"],
                 mean_freeze_rate,
                 mean_melt_rate,
                 fountain_duration,
@@ -219,49 +236,6 @@ if __name__ == "__main__":
 
     with row3_2:
 
-        with open("data/" + location + "/processed/results.json", "r") as read_file:
-            results_dict = json.load(read_file)
-
-    #     if location == "gangles21":
-    #         SITE["expiry_date"] = datetime(2021, 6, 30)
-    #         diff = SITE["end_date"] - SITE["start_date"]
-    #         days, seconds = diff.days, diff.seconds
-    #         icestupa.total_hours = days * 24 + seconds // 3600
-
-    #     if location in ["gangles21", "guttannen21", "guttannen20"]:
-    #         df_c = pd.read_hdf(icestupa.input + "model_input.h5", "df_c")
-    #         df_c = df_c.set_index("time")
-    #         df_in = df_in.set_index("time")
-    #         tol = pd.Timedelta("1T")
-    #         df = pd.merge_asof(
-    #             left=df_in,
-    #             right=df_c,
-    #             right_index=True,
-    #             left_index=True,
-    #             direction="nearest",
-    #             tolerance=tol,
-    #         )
-
-    #         ctr = 0
-    #         while (df[df.DroneV.notnull()].shape[0]) == 0 and ctr != 4:
-    #             tol += pd.Timedelta("15T")
-    #             logger.error(
-    #                 "Timedelta increase as shape %s"
-    #                 % (df[df.DroneV.notnull()].shape[0])
-    #             )
-    #             df = pd.merge_asof(
-    #                 left=df_in,
-    #                 right=df_c,
-    #                 right_index=True,
-    #                 left_index=True,
-    #                 direction="nearest",
-    #                 tolerance=tol,
-    #             )
-    #             ctr += 1
-
-    #         rmse_V = ((df.DroneV - df.iceV) ** 2).mean() ** 0.5
-    #         rmse_A = ((df.Area - df.A_cone) ** 2).mean() ** 0.5/ df.A_cone.max()
-    #         corr_V = df["DroneV"].corr(df["iceV"])
 
         st.markdown(
             """
@@ -277,7 +251,7 @@ if __name__ == "__main__":
                 df_in["iceV"].max(),
                 results_dict["M_water"] / 1000,
                 results_dict["M_sub"] / 1000,
-                (results_dict["M_runoff"] + results_dict["M_sub"]) / results_dict["M_input"] * 100,
+                (results_dict["M_waste"] + results_dict["M_sub"]) / results_dict["M_input"] * 100,
                 SITE["expiry_date"].strftime("%b %d"),
             )
         )
@@ -291,31 +265,6 @@ if __name__ == "__main__":
             st.write("## Validation")
             path = "data/" + location + "/figs/Vol_Validation.jpg"
             st.image(path)
-
-            # if location in ["guttannen21", "guttannen20"]:
-            #     df_cam = pd.read_hdf(icestupa.input + "model_input.h5", "df_cam")
-            #     df = pd.merge_asof(
-            #         left=df_in,
-            #         right=df_cam,
-            #         right_index=True,
-            #         left_index=True,
-            #         direction="nearest",
-            #         tolerance=tol,
-            #     )
-            #     rmse_T = ((df.cam_temp - df.T_s) ** 2).mean() ** 0.5
-            #     corr_T = df["cam_temp"].corr(df["T_s"])
-            # else:
-            #     rmse_T = 0
-            #     corr_T = 0
-
-            # if location in ["gangles21", "guttannen21", "guttannen20"]:
-            #     st.write(
-            #         """
-            #     Correlation of modelled with measured ice volume was **%.2f** and RMSE vol was **%.0f** $m^3$
-            #     RMSE area was **%.2f** $m^2$
-            #     """
-            #         % (corr_V, rmse_V, rmse_A)
-            #     )
 
         if "Timelapse" in display:
             st.write("## Timelapse")
@@ -356,73 +305,3 @@ if __name__ == "__main__":
             """
             )
 
-        if "Input" in display:
-            st.write("## Input variables")
-            variable1 = st.multiselect(
-                "Choose",
-                options=(input_cols),
-                default=["Discharge", "Temperature"],
-                # default=["Temperature"],
-            )
-            if not (variable1):
-                st.error("Please select at least one variable.")
-            else:
-                variable_in = [input_vars[input_cols.index(item)] for item in variable1]
-                variable = variable_in
-                for v in variable:
-
-                    meta = get_parameter_metadata(v)
-                    st.header("%s" % (meta["name"] + " " + meta["units"]))
-                    row4_1, row4_2 = st.columns((2, 5))
-                    with row4_1:
-                        st.write(df_in[v].describe())
-                    with row4_2:
-                        st.line_chart(df_in[v], use_container_width=True)
-
-        if "Output" in display:
-            st.write("## Output variables")
-
-            variable2 = st.multiselect(
-                "Choose",
-                options=(output_cols),
-                default=["Frozen Discharge"],
-            )
-            if not (variable2):
-                st.error("Please select at least one variable.")
-            else:
-                variable_out = [
-                    output_vars[output_cols.index(item)] for item in variable2
-                ]
-                variable = variable_out
-                for v in variable:
-                    meta = get_parameter_metadata(v)
-                    st.header("%s" % (meta["name"] + " " + meta["units"]))
-                    row5_1, row5_2 = st.columns((2, 5))
-                    with row5_1:
-                        st.write(df_in[v].describe())
-                    with row5_2:
-                        st.line_chart(df_in[v], use_container_width=True)
-
-        if "Derived" in display:
-            st.write("## Derived variables")
-            variable3 = st.multiselect(
-                "Choose",
-                options=(derived_cols),
-                default=["Solar Surface Area Fraction"],
-            )
-            if not (variable3):
-                st.error("Please select at least one variable.")
-
-            else:
-                variable_in = [
-                    derived_vars[derived_cols.index(item)] for item in variable3
-                ]
-                variable = variable_in
-                for v in variable:
-                    meta = get_parameter_metadata(v)
-                    st.header("%s" % (meta["name"] + " " + meta["units"]))
-                    row6_1, row6_2 = st.columns((2, 5))
-                    with row6_1:
-                        st.write(df_in[v].describe())
-                    with row6_2:
-                        st.line_chart(df_in[v], use_container_width=True)
