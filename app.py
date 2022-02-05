@@ -59,7 +59,7 @@ if __name__ == "__main__":
     )
 
     location = st.sidebar.radio(
-        "at",
+        " ",
         # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
         ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022"),
     )
