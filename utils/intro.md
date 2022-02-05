@@ -1,7 +1,7 @@
 <details>
 <summary>ℹ️ Info</summary>
 
-This app explores data from [a research project](https://www.unifr.ch/geo/cryosphere/en/projects/smd4gc/artificial-ice-reservoirs.html) that evaluated fountain efficiency and meltwater quantities of scientific icestupas in India and Switzerland. Start by selecting a scientific icestupa from the left. The charts below will display the model expectation vs the validation measurements for the ice volumes.
+This app showcases the results from a [publication](https://www.frontiersin.org/articles/10.3389/feart.2021.771342/full) that evaluated fountain efficiency and meltwater quantities of scientific icestupas in India and Switzerland. Start by selecting a scientific icestupa from the left. The charts below will display the model expectation vs the validation measurements for the ice volumes.
 
 Some Icestupas also have a timelapse video that shows the daily variation in ice volumes seen at the respective site.
 

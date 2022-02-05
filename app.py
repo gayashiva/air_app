@@ -53,13 +53,13 @@ if __name__ == "__main__":
 
     st.sidebar.markdown(
         """
-    # Ice Reservoir
+    # Select Ice Reservoir
 
     """
     )
 
     location = st.sidebar.radio(
-        "built at",
+        "at",
         # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
         ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022"),
     )
@@ -73,19 +73,24 @@ if __name__ == "__main__":
             st.markdown(
                 """
             # Artificial Ice Reservoirs
+            ***_A sustainable water storage technology for mountain communities_***
+                """
+                    )
+        st.markdown(
+                """
 
 ##### This app showcases the results from a [publication](https://www.frontiersin.org/articles/10.3389/feart.2021.771342/full) that evaluated fountain efficiency and meltwater quantities of icestupas in India and Switzerland. 
 
 ##### Start by selecting an icestupa from the left. Tables and plots will display a summary of the results for the selected Icestupa.
 
-##### Some Icestupas also have a **timelapse** video that shows the daily variation in ice volumes seen at the respective site.
+##### Some Icestupas also have a *timelapse* video that shows the daily variation in ice volumes seen at the respective site.
 
 ##### 💻 The code is available freely at [github](https://github.com/Gayashiva/air_model).
 
 ##### Summary of the research results can also be viewed in the video below:
 
-            """
-            )
+        """
+        )
         url = "https://youtu.be/WwnfSO3gJBo"
         st.video(url)
 
