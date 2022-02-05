@@ -234,6 +234,15 @@ if __name__ == "__main__":
                 "logos/Logo-Swiss-Polar-Institute.png",
                 use_column_width=True,
             )
+            st.markdown(" ")
+            st.markdown(" ")
+            st.markdown(" ")
+            st.markdown(" ")
+            st.image(
+                "logos/hochschule-luzern.jpg",
+                # caption="GlaciersAlive",
+                use_column_width=True,
+            )
 
         with row3_1:
 
@@ -311,7 +320,7 @@ if __name__ == "__main__":
                     st.video(url)
                 elif location == "gangles21":
                     st.error("No Timelapse recorded")
-                elif location == "guttannen21":
+                elif location == "guttannen22":
                     st.error("No Timelapse recorded")
 
             if "Data Overview" in display:
