@@ -25,14 +25,14 @@ st.set_page_config(
 
 
 @st.cache
-def vars(df_in):
+def vars(df):
     input_cols = []
     input_vars = []
     output_cols = []
     output_vars = []
     derived_cols = []
     derived_vars = []
-    for variable in df_in.columns:
+    for variable in df.columns:
         v = get_parameter_metadata(variable)
         if v["kind"] == "Input":
             input_cols.append(v["name"])
@@ -106,7 +106,7 @@ if __name__ == "__main__":
 
         CONSTANTS, SITE, FOLDER = config(location)
 
-        df_in = pd.read_hdf("data/" + location + "/processed/output.h5", "df")
+        df = pd.read_hdf("data/" + location + "/processed/output.h5", "df")
 
         (
             input_cols,
@@ -115,7 +115,7 @@ if __name__ == "__main__":
             output_vars,
             derived_cols,
             derived_vars,
-        ) = vars(df_in)
+        ) = vars(df)
 
         row1_1, row1_2 = st.columns((2, 5))
 
@@ -240,11 +240,11 @@ if __name__ == "__main__":
             with open("data/" + location + "/processed/results.json", "r") as read_file:
                 results_dict = json.load(read_file)
 
-            mean_freeze_rate = df_in[
-                df_in.Discharge != 0
+            mean_freeze_rate = df[
+                df.Discharge != 0
             ].fountain_froze.mean() / (CONSTANTS["DT"] / 60)
-            fountain_duration = df_in[df_in.Discharge != 0].shape[0]
-            mean_melt_rate = df_in.melted.mean() / (CONSTANTS["DT"] / 60)
+            fountain_duration = df[df.Discharge != 0].shape[0]
+            mean_melt_rate = df.melted.mean() / (CONSTANTS["DT"] / 60)
             st.markdown(
                 """
             | Fountain | Estimation |
@@ -280,7 +280,7 @@ if __name__ == "__main__":
             | Melt-out date | %s |
             """
                 % (
-                    df_in["iceV"].max(),
+                    df["iceV"].max(),
                     results_dict["M_water"] / 1000,
                     results_dict["M_sub"] / 1000,
                     (results_dict["M_waste"] + results_dict["M_sub"]) / results_dict["M_input"] * 100,
@@ -339,3 +339,75 @@ if __name__ == "__main__":
                 """
                 )
 
+            df = pd.read_hdf(FOLDER["output"] + "output" + ".h5", "df")
+
+            if "Input" in display:
+                st.write("## Input variables")
+                variable1 = st.multiselect(
+                    "Choose",
+                    options=(input_cols),
+                    default=["Discharge", "Temperature"],
+                    # default=["Temperature"],
+                )
+                if not (variable1):
+                    st.error("Please select at least one variable.")
+                else:
+                    variable_in = [input_vars[input_cols.index(item)] for item in variable1]
+                    variable = variable_in
+                    for v in variable:
+
+                        meta = get_parameter_metadata(v)
+                        st.header("%s" % (meta["name"] + " " + meta["units"]))
+                        row4_1, row4_2 = st.columns((2, 5))
+                        with row4_1:
+                            st.write(df[v].describe())
+                        with row4_2:
+                            st.line_chart(df[v], use_container_width=True)
+
+            if "Output" in display:
+                st.write("## Output variables")
+
+                variable2 = st.multiselect(
+                    "Choose",
+                    options=(output_cols),
+                    default=["Frozen Discharge"],
+                )
+                if not (variable2):
+                    st.error("Please select at least one variable.")
+                else:
+                    variable_out = [
+                        output_vars[output_cols.index(item)] for item in variable2
+                    ]
+                    variable = variable_out
+                    for v in variable:
+                        meta = get_parameter_metadata(v)
+                        st.header("%s" % (meta["name"] + " " + meta["units"]))
+                        row5_1, row5_2 = st.columns((2, 5))
+                        with row5_1:
+                            st.write(df[v].describe())
+                        with row5_2:
+                            st.line_chart(df[v], use_container_width=True)
+
+            if "Derived" in display:
+                st.write("## Derived variables")
+                variable3 = st.multiselect(
+                    "Choose",
+                    options=(derived_cols),
+                    default=["Solar Surface Area Fraction"],
+                )
+                if not (variable3):
+                    st.error("Please select at least one variable.")
+
+                else:
+                    variable_in = [
+                        derived_vars[derived_cols.index(item)] for item in variable3
+                    ]
+                    variable = variable_in
+                    for v in variable:
+                        meta = get_parameter_metadata(v)
+                        st.header("%s" % (meta["name"] + " " + meta["units"]))
+                        row6_1, row6_2 = st.columns((2, 5))
+                        with row6_1:
+                            st.write(df[v].describe())
+                        with row6_2:
+                            st.line_chart(df[v], use_container_width=True)
