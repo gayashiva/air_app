@@ -61,7 +61,7 @@ if __name__ == "__main__":
     location = st.sidebar.radio(
         "at",
         # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
-        ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022"),
+        ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022 Manual", "Guttannen 2022 Auto"),
     )
 
     if location == "Home":
@@ -97,10 +97,11 @@ if __name__ == "__main__":
     else:
 
         loc_dict ={
-                "Guttannen 2021": "guttannen21",
-                "Guttannen 2020": "guttannen20",
-                "Guttannen 2022": "guttannen22",
                 "Gangles 2021": "gangles21",
+                "Guttannen 2020": "guttannen20",
+                "Guttannen 2021": "guttannen21",
+                "Guttannen 2022 Manual": "guttannen22_man",
+                "Guttannen 2022 Auto": "guttannen22_auto",
             }
         location = loc_dict[location]
 

@@ -112,8 +112,15 @@ def get_parameter_metadata(
             "kind": "site",
             "units": "()",
         },
-        "guttannen22": {
-            "name": "Guttannen 2022",
+        "guttannen22_auto": {
+            "name": "Guttannen 2022 Auto",
+            "shortname": "CH22",
+            "slidename": "Swiss",
+            "kind": "site",
+            "units": "()",
+        },
+        "guttannen22_man": {
+            "name": "Guttannen 2022 Manual",
             "shortname": "CH22",
             "slidename": "Swiss",
             "kind": "site",
