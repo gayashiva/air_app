@@ -61,7 +61,7 @@ if __name__ == "__main__":
     location = st.sidebar.radio(
         "at",
         # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
-        ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022 Manual", "Guttannen 2022 Auto"),
+        ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022"),
     )
 
     if location == "Home":
@@ -100,14 +100,13 @@ if __name__ == "__main__":
                 "Gangles 2021": "gangles21",
                 "Guttannen 2020": "guttannen20",
                 "Guttannen 2021": "guttannen21",
-                "Guttannen 2022 Manual": "guttannen22_man",
-                "Guttannen 2022 Auto": "guttannen22_auto",
+                "Guttannen 2022": "guttannen22",
             }
         location = loc_dict[location]
 
         CONSTANTS, SITE, FOLDER = config(location)
 
-        df = pd.read_hdf("data/" + location + "/processed/output.h5", "df")
+        df = pd.read_hdf("data/" + location + "/processed/" + "man" + "/output.h5", "df")
 
         (
             input_cols,
@@ -238,7 +237,7 @@ if __name__ == "__main__":
 
         with row3_1:
 
-            with open("data/" + location + "/processed/results.json", "r") as read_file:
+            with open("data/" + location + "/processed/" + "man" + "/results.json", "r") as read_file:
                 results_dict = json.load(read_file)
 
             mean_freeze_rate = df[
@@ -296,7 +295,7 @@ if __name__ == "__main__":
             if "Validation" in display:
 
                 st.write("## Validation")
-                path = "data/" + location + "/figs/Vol_Validation.jpg"
+                path = "data/" + location + "/figs/" + "man" + "/Vol_Validation.jpg"
                 st.image(path)
 
             if "Timelapse" in display:
@@ -340,7 +339,7 @@ if __name__ == "__main__":
                 """
                 )
 
-            df = pd.read_hdf(FOLDER["output"] + "output" + ".h5", "df")
+            df = pd.read_hdf(FOLDER["output"] + "man " + "/output" + ".h5", "df")
 
             if "Input" in display:
                 st.write("## Input variables")
