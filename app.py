@@ -104,9 +104,13 @@ if __name__ == "__main__":
             }
         location = loc_dict[location]
 
+        spray = "man"
+        if location == "guttannen22":
+            spray = "auto"
+
         CONSTANTS, SITE, FOLDER = config(location)
 
-        df = pd.read_hdf("data/" + location + "/processed/" + "man" + "/output.h5", "df")
+        df = pd.read_hdf("data/" + location + "/processed/" + spray + "/output.h5", "df")
 
         (
             input_cols,
@@ -149,28 +153,14 @@ if __name__ == "__main__":
 
         st.markdown("---")
         st.sidebar.write("### Map")
-        lat = SITE["latitude"]
-        lon = SITE["longitude"]
+        lat = SITE["coords"][0]
+        lon = SITE["coords"][1]
         map_data = pd.DataFrame({"lat": [lat], "lon": [lon]})
         st.sidebar.map(map_data, zoom=10)
 
         st.sidebar.write(
             """
-        ### About
-        Several villages in the arid high Himalayas have been constructing
-        [artificial ice
-        reservoirs](https://www.thethirdpole.net/en/climate/the-glacier-marriages-in-pakistans-high-himalayas/)
-        to meet their farming water demand in early spring. With the invention of
-        [icestupas](https://www.youtube.com/watch?v=2xuBvI98-n4&t=2s) this
-        practice of storing water as ice now shows great potential over
-        traditional water storage techniques. It doesn't need any energy to
-        construct and the materials needed like pipelines and fountain are
-        often already available to a farmer. One major limitation though is where this
-        technology can be applied, since it requires certain favourable weather
-        conditions in order to freeze the available water.  In order to identify such suitable regions, we developed a
-        physical model that takes weather conditions and water availability as
-        input and estimates the amount of meltwater expected.
-
+        ###
         [![Follow](https://img.shields.io/twitter/follow/know_just_ice?style=social)](https://www.twitter.com/know_just_ice)
         """
         )
@@ -237,7 +227,7 @@ if __name__ == "__main__":
 
         with row3_1:
 
-            with open("data/" + location + "/processed/" + "man" + "/results.json", "r") as read_file:
+            with open("data/" + location + "/processed/" + spray + "/results.json", "r") as read_file:
                 results_dict = json.load(read_file)
 
             mean_freeze_rate = df[
@@ -295,7 +285,7 @@ if __name__ == "__main__":
             if "Validation" in display:
 
                 st.write("## Validation")
-                path = "data/" + location + "/figs/" + "man" + "/Vol_Validation.jpg"
+                path = "data/" + location + "/figs/" + spray + "/Vol_Validation.jpg"
                 st.image(path)
 
             if "Timelapse" in display:
@@ -339,7 +329,7 @@ if __name__ == "__main__":
                 """
                 )
 
-            df = pd.read_hdf(FOLDER["output"] + "man " + "/output" + ".h5", "df")
+            df = pd.read_hdf(FOLDER["output"] + spray + "/output" + ".h5", "df")
 
             if "Input" in display:
                 st.write("## Input variables")
