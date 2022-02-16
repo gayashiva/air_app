@@ -1,3 +1,4 @@
+
 """Location specific settings used to initialise icestupa object
 """
 
@@ -16,33 +17,50 @@ dirname = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__fil
 sys.path.append(dirname)
 
 
-def config(location="guttannen21"):
+def config(location="guttannen21", spray="man"):
 
     if location == "Guttannen 2022" or location == "guttannen22":
 
         SITE = dict(
             name="guttannen22",
-            start_date=datetime(2021, 12, 3, 8),
-            # end_date=datetime(2021, 5, 10, 1),
-            expiry_date=datetime(2022, 1, 27),
-            fountain_off_date=datetime(2022, 1, 27),
-            # R_F=5.57,  # Fountain mean discharge
-            utc=2,
             alt=1047.6,
-            latitude=46.65549,
-            longitude=8.29149,
-            h_i = 0.13, #Initialise ice height at start
-            # h_f=3,
-            # perimeter=35, # on Jan 28
-
+            coords=[46.65549,8.29149],
             # Calibrated values
             DX=45e-03,  # Surface layer thickness [m]
         )
 
-        f_heights = [
-            {"When": SITE["start_date"], "h_f": 3},
-            {"When": datetime(2022, 12, 23, 16), "h_f": 4},
-        ]
+        if spray == "auto":
+            auto= dict(
+                start_date=datetime(2021, 12, 3, 8),
+                expiry_date=datetime(2022, 1, 27),
+                fountain_off_date=datetime(2022, 1, 27),
+                h_i = 0.13, #Initialise ice height at start
+            # perimeter=35, # on Jan 28
+            )
+
+            SITE = dict(SITE, **auto)
+            f_heights = [
+                {"time": SITE["start_date"], "h_f": 3},
+                {"time": datetime(2022, 12, 23, 16), "h_f": 4},
+            ]
+
+        if spray == "man":
+            man = dict(
+                start_date=datetime(2021, 12, 8, 14),
+                expiry_date=datetime(2022, 1, 27),
+                fountain_off_date=datetime(2022, 1, 27),
+                alt=1047.6,
+                coords=[46.65549,8.29149],
+                #TODO correct snow height
+                h_i = 0.13, #Initialise ice height at start
+            )
+
+            SITE = dict(SITE, **man)
+            f_heights = [
+                {"time": SITE["start_date"], "h_f": 3.7},
+                {"time": datetime(2022, 12, 23, 16), "h_f": 4.7},
+                {"time": datetime(2022, 2, 12, 16), "h_f": 5.7},
+            ]
 
     if location == "Guttannen 2021" or location == "guttannen21":
 
@@ -53,10 +71,10 @@ def config(location="guttannen21"):
             expiry_date=datetime(2021, 5, 10, 1),
             fountain_off_date=datetime(2021, 2, 20, 10),
             D_F=7.5,  # Fountain mean discharge
-            utc=2,
+            # R_F=4.3,  # Fountain mean discharge
+            # R_F=5.4,  # First drone rad
             alt=1047.6,
-            latitude=46.65549,
-            longitude=8.29149,
+            coords=[46.65549,8.29149],
             # h_f=5,
             # perimeter=45, # on Feb 11
 
@@ -65,10 +83,10 @@ def config(location="guttannen21"):
         )
 
         f_heights = [
-            {"When": SITE["start_date"], "h_f": 2.5},
-            {"When": datetime(2020, 12, 30, 16), "h_f": 3.5},
-            {"When": datetime(2021, 1, 7, 16), "h_f": 5.5},
-            {"When": datetime(2021, 1, 11, 16), "h_f": 4.5},
+            {"time": SITE["start_date"], "h_f": 2.68},
+            {"time": datetime(2020, 12, 30, 16), "h_f": 3.75},
+            {"time": datetime(2021, 1, 7, 16), "h_f": 4.68},
+            {"time": datetime(2021, 1, 11, 16), "h_f": 5.68},
         ]
 
     if location == "Guttannen 2020" or location == "guttannen20":
@@ -80,10 +98,9 @@ def config(location="guttannen21"):
             expiry_date=datetime(2020, 4, 6, 12),
             fountain_off_date=datetime(2020, 3, 8, 9),  # Image shows Dani switched off at 8th Mar 10 am
             D_F=7.5,  # Fountain mean discharge
-            utc=2,
+            # R_F=6.68,  # First drone rad
             alt=1047.6,
-            latitude=46.649999,
-            longitude=8.283333,
+            coords=[46.65549,8.29149],
             # h_f=3,
             # perimeter=28, # on 24 Jan
 
@@ -92,9 +109,9 @@ def config(location="guttannen21"):
         )
 
         f_heights = [
-            {"When": SITE["start_date"], "h_f": 2.5},
-            {"When": datetime(2020, 1, 24, 12), "h_f": 3.5},
-            {"When": datetime(2020, 2, 5, 19), "h_f": 2.5},
+            {"time": SITE["start_date"], "h_f": 2.5},
+            {"time": datetime(2020, 1, 24, 12), "h_f": 3.5},
+            {"time": datetime(2020, 2, 5, 19), "h_f": 2.5},
         ]
 
     if location == "Gangles 2021" or location == "gangles21":
@@ -106,10 +123,9 @@ def config(location="guttannen21"):
             expiry_date=datetime(2021, 6, 20),
             fountain_off_date=datetime(2021, 3, 10, 18),
             D_F=60,  # FOUNTAIN min discharge
-            utc=5.5,
+            # R_F=9.05,  # First drone rad
             alt=4009,
-            longitude=77.606949,
-            latitude=34.216638,
+            coords=[34.216638,77.606949],
             h_f=9,
             tcc=0,  # Total cloud cover
             # tcc=0.1,  # Total cloud cover
@@ -120,58 +136,17 @@ def config(location="guttannen21"):
         )
 
         f_heights = [
-            {"When": SITE["start_date"], "h_f": 5},
-            # {"When": datetime(2021, 1, 22, 16), "h_f": 9},
+            {"time": SITE["start_date"], "h_f": 5},
+            {"time": datetime(2021, 1, 22, 16), "h_f": 9},
         ]
-
-    if location == "Schwarzsee 2019" or location == "schwarzsee19":
-        SITE = dict(
-            name="schwarzsee19",
-            start_date=datetime(2019, 1, 30, 17),
-            # end_date=datetime(2019, 3, 17),
-            expiry_date=datetime(2019, 3, 10, 19),
-            fountain_off_date=datetime(2019, 2, 16, 10),
-            utc=1,
-            longitude=7.297543,
-            latitude=46.693723,
-            R_F=1.233,
-            # discharge=3.58,  # FOUNTAIN on mean discharge from field
-            # dia_f=0.0056,  # FOUNTAIN aperture diameter
-            # DX= 50e-03,
-            # Z= 5e-03,
-        )
-
-        f_heights = [
-            {"When": SITE["start_date"], "h_f": 1.35},
-        ]
-
-    if location == "Phortse 2020" or location == "phortse20":
-
-        SITE = dict(
-            name="phortse20",
-            start_date=datetime(2019, 12, 1),
-            expiry_date=datetime(2020, 2, 1),
-            fountain_off_date=datetime(2020, 2, 1),
-            D_F=60,
-            utc=1,
-            latitude=46.649999,
-            longitude=8.283333,
-            SA_corr=1.2,
-            Z=0.001,
-            R_F=10,
-            tcc=0,
-        )
-
-        f_heights = [
-            {"When": SITE["start_date"], "h_f": 5},
-        ]
-
 
     # Define directory structure
     FOLDER = dict(
         raw="data/" + SITE["name"] + "/raw/",
         input="data/" + SITE["name"] + "/interim/",
         output="data/" + SITE["name"] + "/processed/",
+        output_auto="data/" + SITE["name"] + "/processed/auto/",
+        output_man="data/" + SITE["name"] + "/processed/man/",
         sim="data/" + SITE["name"] + "/processed/simulations/",
         fig="data/" + SITE["name"] + "/figs/",
     )
