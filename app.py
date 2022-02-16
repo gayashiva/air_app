@@ -224,6 +224,15 @@ if __name__ == "__main__":
                 "logos/Logo-Swiss-Polar-Institute.png",
                 use_column_width=True,
             )
+            st.markdown(" ")
+            st.markdown(" ")
+            st.markdown(" ")
+            st.markdown(" ")
+            st.image(
+                "logos/hochschule-luzern.jpg",
+                # caption="GlaciersAlive",
+                use_column_width=True,
+            )
 
         with row3_1:
 
