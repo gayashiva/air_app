@@ -158,12 +158,6 @@ if __name__ == "__main__":
         map_data = pd.DataFrame({"lat": [lat], "lon": [lon]})
         st.sidebar.map(map_data, zoom=10)
 
-        st.sidebar.write(
-            """
-        ###
-        [![Follow](https://img.shields.io/twitter/follow/know_just_ice?style=social)](https://www.twitter.com/know_just_ice)
-        """
-        )
 
         st.sidebar.write(
             """
@@ -233,6 +227,13 @@ if __name__ == "__main__":
                 # caption="GlaciersAlive",
                 use_column_width=True,
             )
+
+        st.sidebar.write(
+            """
+        ###
+        [![Follow](https://img.shields.io/twitter/follow/know_just_ice?style=social)](https://www.twitter.com/know_just_ice)
+        """
+        )
 
         with row3_1:
 
