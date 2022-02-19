@@ -61,7 +61,7 @@ if __name__ == "__main__":
     location = st.sidebar.radio(
         "at",
         # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
-        ( "Home", "Guttannen 2021", "Gangles 2021", "Guttannen 2020", "Guttannen 2022"),
+        ( "Home",  "Guttannen 2020", "Guttannen 2021", "Guttannen 2022","Gangles 2021"),
     )
 
     if location == "Home":
@@ -268,7 +268,6 @@ if __name__ == "__main__":
 
         with row3_2:
 
-
             st.markdown(
                 """
             | Icestupa| Estimation |
@@ -276,14 +275,14 @@ if __name__ == "__main__":
             | Max Ice Volume | %i $m^{3}$|
             | Meltwater released | %i $tons$ |
             | Vapour loss | %i $tons$ |
-            | Net Water loss | %i $percent$ |
+            | Water Use Efficiency | %i $percent$ |
             | Melt-out date | %s |
             """
                 % (
                     df["iceV"].max(),
                     results_dict["M_water"] / 1000,
                     results_dict["M_sub"] / 1000,
-                    (results_dict["M_waste"] + results_dict["M_sub"]) / results_dict["M_input"] * 100,
+                    results_dict["WUE"],
                     SITE["expiry_date"].strftime("%b %d"),
                 )
             )
@@ -295,7 +294,7 @@ if __name__ == "__main__":
             if "Validation" in display:
 
                 st.write("## Validation")
-                path = "data/" + location + "/figs/" + spray + "/Vol_Validation.jpg"
+                path = "data/" + location + "/figs/" + spray + "/Vol_Validation.png"
                 st.image(path)
 
             if "Timelapse" in display:
@@ -316,7 +315,7 @@ if __name__ == "__main__":
 
             if "Data Overview" in display:
                 st.write("## Input variables")
-                st.image("data/" + location + "/figs/Model_Input.jpg")
+                st.image("data/" + location + "/figs/Model_Input.png")
                 st.write(
                     """
                 Measurements at the AWS of %s were used as main model input
@@ -327,7 +326,7 @@ if __name__ == "__main__":
                     % (location)
                 )
                 st.write("## Output variables")
-                st.image("data/" + location + "/figs/Model_Output.jpg")
+                st.image("data/" + location + "/figs/Model_Output.png")
                 st.write(
                     """
                 (a) Fountain discharge (b) energy flux components, (c) mass flux components (d)
