@@ -105,8 +105,8 @@ if __name__ == "__main__":
         location = loc_dict[location]
 
         spray = "man"
-        if location == "guttannen22":
-            spray = "auto"
+        # if location == "guttannen22":
+        #     spray = "auto"
 
         CONSTANTS, SITE, FOLDER = config(location)
 

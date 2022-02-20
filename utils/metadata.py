@@ -17,6 +17,12 @@ def get_parameter_metadata(
             "kind": "parameter",
             "units": "[$mm$]",
         },
+        "cld": {
+            "name": "Cloudiness index",
+            # "latex": "$A_{corr}$",
+            "kind": "parameter",
+            "units": " ",
+        },
         "snow_h": {
             "name": "Snow height",
             # "latex": "$A_{corr}$",
