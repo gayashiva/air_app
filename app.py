@@ -58,13 +58,13 @@ if __name__ == "__main__":
     """
     )
 
-    location = st.sidebar.radio(
+    loc= st.sidebar.radio(
         "at",
         # ("gangles21", "guttannen21", "guttannen20", "guttannen22"),
         ( "Home",  "Guttannen 2020", "Guttannen 2021", "Guttannen 2022","Gangles 2021"),
     )
 
-    if location == "Home":
+    if loc== "Home":
         row1_1, row1_2 = st.columns((2, 5))
         with row1_1:
             st.image(air_logo, width=160)
@@ -96,21 +96,22 @@ if __name__ == "__main__":
 
     else:
 
+        with open("utils/constants.json") as f:
+            CONSTANTS = json.load(f)
+
         loc_dict ={
                 "Gangles 2021": "gangles21",
                 "Guttannen 2020": "guttannen20",
                 "Guttannen 2021": "guttannen21",
                 "Guttannen 2022": "guttannen22",
             }
-        location = loc_dict[location]
+        loc = loc_dict[loc]
 
-        spray = "man"
-        # if location == "guttannen22":
-        #     spray = "auto"
+        spray = "unscheduled_field"
 
-        CONSTANTS, SITE, FOLDER = config(location)
+        SITE, FOLDER = config(loc, spray)
 
-        df = pd.read_hdf("data/" + location + "/processed/" + spray + "/output.h5", "df")
+        df = pd.read_hdf(FOLDER["output"] + "output.h5", "df")
 
         (
             input_cols,
@@ -132,7 +133,7 @@ if __name__ == "__main__":
             # **_%s_** Icestupa
 
             """
-                % get_parameter_metadata(location)["name"].split()[0]
+                % get_parameter_metadata(loc)["name"].split()[0]
             )
             visualize = [
                 "Timelapse",
@@ -237,7 +238,7 @@ if __name__ == "__main__":
 
         with row3_1:
 
-            with open("data/" + location + "/processed/" + spray + "/results.json", "r") as read_file:
+            with open(FOLDER["output"] + "results.json", "r") as read_file:
                 results_dict = json.load(read_file)
 
             mean_freeze_rate = df[
@@ -294,28 +295,28 @@ if __name__ == "__main__":
             if "Validation" in display:
 
                 st.write("## Validation")
-                path = "data/" + location + "/figs/" + spray + "/Vol_Validation.png"
+                path = FOLDER["fig"] + "Vol_Validation.png"
                 st.image(path)
 
             if "Timelapse" in display:
                 st.write("## Timelapse")
-                if location == "schwarzsee19":
+                if loc== "schwarzsee19":
                     url = "https://youtu.be/GhljRBGpxMg"
                     st.video(url)
-                elif location == "guttannen21":
+                elif loc== "guttannen21":
                     url = "https://www.youtube.com/watch?v=kXi4abO4YVM"
                     st.video(url)
-                elif location == "guttannen20":
+                elif loc== "guttannen20":
                     url = "https://youtu.be/kcrvhU20OOE"
                     st.video(url)
-                elif location == "gangles21":
+                elif loc== "gangles21":
                     st.error("No Timelapse recorded")
-                elif location == "guttannen21":
+                elif loc== "guttannen21":
                     st.error("No Timelapse recorded")
 
             if "Data Overview" in display:
                 st.write("## Input variables")
-                st.image("data/" + location + "/figs/Model_Input.png")
+                st.image(FOLDER["fig"] + "Input.png")
                 st.write(
                     """
                 Measurements at the AWS of %s were used as main model input
@@ -323,10 +324,10 @@ if __name__ == "__main__":
                 were obtained from ERA5 reanalysis dataset. Several data gaps
                 and errors were also filled from the ERA5 dataset (shaded regions).  
                 """
-                    % (location)
+                    % (loc)
                 )
                 st.write("## Output variables")
-                st.image("data/" + location + "/figs/Model_Output.png")
+                st.image(FOLDER["fig"] + "Output.png")
                 st.write(
                     """
                 (a) Fountain discharge (b) energy flux components, (c) mass flux components (d)
@@ -338,7 +339,7 @@ if __name__ == "__main__":
                 """
                 )
 
-            df = pd.read_hdf(FOLDER["output"] + spray + "/output" + ".h5", "df")
+            df = pd.read_hdf(FOLDER["output"] + "output.h5", "df")
 
             if "Input" in display:
                 st.write("## Input variables")

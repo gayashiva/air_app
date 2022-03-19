@@ -1,10 +1,5 @@
 """Returns Parameter metadata for web app
 """
-
-import streamlit as st
-
-
-@st.cache
 def get_parameter_metadata(
     parameter,
 ):  # Provides Metadata of all input and Output variables
@@ -16,12 +11,6 @@ def get_parameter_metadata(
             "step": 1e-03,
             "kind": "parameter",
             "units": "[$mm$]",
-        },
-        "cld": {
-            "name": "Cloudiness index",
-            # "latex": "$A_{corr}$",
-            "kind": "parameter",
-            "units": " ",
         },
         "snow_h": {
             "name": "Snow height",
@@ -111,6 +100,13 @@ def get_parameter_metadata(
             "kind": "parameter",
             "units": "($\\degree C$)",
         },
+        "guttannen22": {
+            "name": "Guttannen 2022",
+            "shortname": "CH22",
+            "slidename": "Swiss",
+            "kind": "site",
+            "units": "()",
+        },
         "guttannen21": {
             "name": "Guttannen 2021",
             "shortname": "CH21",
@@ -118,9 +114,9 @@ def get_parameter_metadata(
             "kind": "site",
             "units": "()",
         },
-        "guttannen22": {
-            "name": "Guttannen 2022",
-            "shortname": "CH22",
+        "Guttannen 2021": {
+            "name": "Guttannen 2021",
+            "shortname": "CH21",
             "slidename": "Swiss",
             "kind": "site",
             "units": "()",
@@ -379,6 +375,11 @@ def get_parameter_metadata(
             "kind": "Derived",
             "units": "($\\degree C$)",
         },
+        "T_bulk_meas": {
+            "name": "Measured Bulk Temperature",
+            "kind": "Derived",
+            "units": "($\\degree C$)",
+        },
         "sea": {
             "name": "Solar Elevation Angle",
             "kind": "Derived",
@@ -444,5 +445,22 @@ def get_parameter_metadata(
             "latex": "$\\Delta y$",
             "kind": "Output",
             "units": "($m$)",
+        },
+        "ghi": {
+            "name": "Global Shortwave",
+            "kind": "Input",
+        },
+        "cld": {
+            "name": "Cloudiness factor",
+            "kind": "Input",
+        },
+        "dis": {
+            "name": "Discharge",
+            "kind": "Input",
+        },
+        "rho_air": {
+            "name": "AIR Density",
+            "kind": "Output",
+            "units": "($kg/m3$)",
         },
     }[parameter]
